@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Station Simluator"
-run/main_scene="res://main_scene.tscn"
+run/main_scene="res://scenes/main_scene.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 boot_splash/bg_color=Color(0.796078, 0.635294, 0.745098, 1)
 config/icon="res://icon.svg"
@@ -33,10 +33,13 @@ project/assembly_name="Station Simluator"
 2d_physics/layer_1="Train Pickup"
 2d_navigation/layer_1="Platform Navigation"
 2d_physics/layer_2="Train Exit"
+2d_physics/layer_3="Train"
 2d_physics/layer_4="Grass"
 2d_physics/layer_5="People"
+2d_physics/layer_6="Station"
 
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+renderer/rendering_method="gl_compatibility"
 environment/defaults/default_clear_color=Color(0.796078, 0.635294, 0.745098, 1)

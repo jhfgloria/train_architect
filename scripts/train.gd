@@ -1,16 +1,16 @@
-extends CharacterBody2D
+extends StaticBody2D
 
 var base_speed = 60
 var pick_up = false
 var speed = base_speed
 	
-func _physics_process(_delta):
-	velocity = Vector2(speed, 0)
+func _physics_process(delta):
+	var velocity = Vector2(speed, 0)
 	
 	if pick_up:
 		move_toward(speed, 0, -1)
 	else:
-		move_and_slide()
+		move_and_collide(velocity * delta)
 
 
 func _on_pickup_position_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):

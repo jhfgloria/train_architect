@@ -1,24 +1,27 @@
 [gd_scene load_steps=5 format=3 uid="uid://0patkwxygy7a"]
 
-[ext_resource type="Texture2D" uid="uid://fidil5q2pk1b" path="res://Train.png" id="1_63el3"]
-[ext_resource type="Script" path="res://train.gd" id="1_sl467"]
+[ext_resource type="Script" path="res://scripts/train.gd" id="1_rd6qo"]
+[ext_resource type="Texture2D" uid="uid://fidil5q2pk1b" path="res://sprites/Train.png" id="2_miii6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_70b2h"]
+size = Vector2(19.7222, 12.1429)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dtxi6"]
 
-[node name="Train" type="CharacterBody2D"]
-script = ExtResource("1_sl467")
+[node name="Train" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_rd6qo")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-130, -19)
-texture = ExtResource("1_63el3")
+texture = ExtResource("2_miii6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-130, -7.5)
+position = Vector2(-131.8, -4.75)
 scale = Vector2(12.96, 0.7)
 shape = SubResource("RectangleShape2D_70b2h")
-debug_color = Color(0.827451, 0.388235, 0.2, 0.419608)
+debug_color = Color(0.784314, 0.356863, 0.635294, 0.419608)
 
 [node name="Pickup Position" type="Area2D" parent="."]
 position = Vector2(-130, -20)

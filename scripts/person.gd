@@ -16,9 +16,9 @@ func _physics_process(_delta):
 	if moving:
 		move_and_slide()
 		check_target()
-	
+
 func check_target():
 	var diff: Vector2 = global_position - target_position
 	
-	if diff.abs() < Vector2(0.5, 0.5):
+	if diff.abs().x < 0.5 and diff.abs().y < 0.5:
 		moving = false
