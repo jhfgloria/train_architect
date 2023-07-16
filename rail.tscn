@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://c2ct1cnlbnswc"]
+
+[ext_resource type="Texture2D" uid="uid://cvxmavoxsxovq" path="res://Rail.png" id="1_ltnqd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ep64n"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4i31j"]
+
+[node name="Rail" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ltnqd")
+
+[node name="Spawn Position" type="Node2D" parent="."]
+position = Vector2(-240, 6)
+
+[node name="Pickup Position" type="Area2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pickup Position"]
+scale = Vector2(0.200925, 0.2)
+shape = SubResource("CircleShape2D_ep64n")
+
+[node name="Exit Position" type="Area2D" parent="."]
+position = Vector2(240, 0)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit Position"]
+scale = Vector2(0.201392, 0.196774)
+shape = SubResource("CircleShape2D_4i31j")
