@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://0patkwxygy7a"]
+[gd_scene load_steps=6 format=3 uid="uid://0patkwxygy7a"]
 
 [ext_resource type="Script" path="res://scripts/train.gd" id="1_rd6qo"]
 [ext_resource type="Texture2D" uid="uid://fidil5q2pk1b" path="res://sprites/Train.png" id="2_miii6"]
@@ -7,6 +7,8 @@
 size = Vector2(19.7222, 12.1429)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dtxi6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q88ua"]
 
 [node name="Train" type="StaticBody2D"]
 collision_layer = 4
@@ -46,6 +48,16 @@ shape = SubResource("RectangleShape2D_dtxi6")
 wait_time = 5.0
 one_shot = true
 
+[node name="Pickup Area" type="Area2D" parent="."]
+position = Vector2(-130, -10)
+scale = Vector2(12.88, 2.27407)
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pickup Area"]
+shape = SubResource("RectangleShape2D_q88ua")
+
 [connection signal="area_shape_entered" from="Pickup Position" to="." method="_on_pickup_position_area_shape_entered"]
 [connection signal="area_shape_entered" from="Exit Position" to="." method="_on_exit_position_area_shape_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Pickup Area" to="." method="_on_pickup_area_body_entered"]

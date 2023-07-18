@@ -1,12 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://c2ct1cnlbnswc"]
+[gd_scene load_steps=6 format=3 uid="uid://c2ct1cnlbnswc"]
 
 [ext_resource type="Texture2D" uid="uid://cvxmavoxsxovq" path="res://sprites/Rail.png" id="1_8qsfk"]
+[ext_resource type="Script" path="res://scenes/rail.gd" id="1_ed1yx"]
+[ext_resource type="PackedScene" uid="uid://c8sflbb3glten" path="res://scenes/train_schedule.tscn" id="2_w0n7x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ep64n"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4i31j"]
 
 [node name="Rail" type="Node2D"]
+script = ExtResource("1_ed1yx")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_8qsfk")
@@ -29,3 +32,5 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit Position"]
 scale = Vector2(0.201392, 0.196774)
 shape = SubResource("CircleShape2D_4i31j")
+
+[node name="Train Schedule" parent="." instance=ExtResource("2_w0n7x")]

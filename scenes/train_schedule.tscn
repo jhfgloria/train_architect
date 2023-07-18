@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8sflbb3glten"]
+
+[ext_resource type="Script" path="res://scripts/train_schedule.gd" id="1_62l0s"]
+
+[node name="Train Schedule" type="Node2D"]
+script = ExtResource("1_62l0s")
+
+[node name="Announcing Timer" type="Timer" parent="."]
+
+[node name="Dispatch Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Announcing Timer" to="." method="_call_people_to_station"]
+[connection signal="timeout" from="Dispatch Timer" to="." method="_dispatch_train"]

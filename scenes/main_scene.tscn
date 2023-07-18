@@ -1,11 +1,10 @@
-[gd_scene load_steps=24 format=3 uid="uid://du3jvraoqvccm"]
+[gd_scene load_steps=23 format=3 uid="uid://du3jvraoqvccm"]
 
 [ext_resource type="Script" path="res://scripts/game_loop.gd" id="1_m2ygn"]
 [ext_resource type="Texture2D" uid="uid://bftcbnyra23ti" path="res://sprites/Floor.png" id="2_od070"]
 [ext_resource type="PackedScene" uid="uid://bg18dr70vmb43" path="res://scenes/station.tscn" id="3_tpn0f"]
 [ext_resource type="PackedScene" uid="uid://c2ct1cnlbnswc" path="res://scenes/rail.tscn" id="4_4tkv1"]
 [ext_resource type="Texture2D" uid="uid://dldlmec7ifc2y" path="res://sprites/Background.png" id="5_6mh0e"]
-[ext_resource type="PackedScene" uid="uid://q0dl7j8cms38" path="res://scenes/person.tscn" id="6_gittt"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_d8djh"]
 vertices = PackedVector2Array(5, 3.5, 5, 8, -3.5, 8, -6, 3, -6, 8, -6, -5, 8, -5, 8, 3.5)
@@ -404,9 +403,3 @@ scale = Vector2(4, 8)
 texture = ExtResource("5_6mh0e")
 
 [node name="Rails" type="Node2D" parent="."]
-
-[node name="Node2D" type="Node2D" parent="."]
-
-[node name="Person" parent="." instance=ExtResource("6_gittt")]
-position = Vector2(297, 105)
-motion_mode = 0

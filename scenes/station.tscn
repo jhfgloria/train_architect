@@ -1,17 +1,20 @@
 [gd_scene load_steps=3 format=3 uid="uid://bg18dr70vmb43"]
 
 [ext_resource type="Texture2D" uid="uid://byhgwlanryl0h" path="res://sprites/Station.png" id="1_drnxe"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_j5o72"]
-size = Vector2(96, 50)
+[ext_resource type="Script" path="res://scripts/station.gd" id="1_n30os"]
 
 [node name="Station" type="StaticBody2D"]
 collision_layer = 32
 collision_mask = 16
+script = ExtResource("1_n30os")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_drnxe")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
 position = Vector2(0, 15)
-shape = SubResource("RectangleShape2D_j5o72")
+build_mode = 1
+polygon = PackedVector2Array(-48, -25, -48, 25, -14, 25, -14, 13, -7, 5, 6, 5, 14, 13, 14, 25, 48, 25, 48, -25, 24, -25, 1, -49, -2, -49, -26, -25)
+
+[node name="Spawn Position" type="Node2D" parent="."]
+position = Vector2(0, 39)
