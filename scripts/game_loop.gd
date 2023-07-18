@@ -3,15 +3,30 @@ extends Node2D
 @onready var station = $Station as Station
 @onready var rails_collection = $Rails as Node2D
 @onready var terrain = $Tiles as TileMap
+@onready var placeholder = $Placeholder as Node2D
 
 var person_model = preload("res://scenes/person.tscn") as PackedScene
 var train_model = preload("res://scenes/train.tscn") as PackedScene
 var rail_model = preload("res://scenes/rail.tscn") as PackedScene
 
 var taken_positions: Array[Vector2] = []
+var build_path_start: Vector2
+var build_path_end: Vector2
 
 func _ready():
 	_build_rail(Vector2(240, 120))
+
+func _input(event: InputEvent):
+	if event is InputEventMouseButton:
+		if event.pressed:
+			self.build_path_start = terrain.local_to_map(self.placeholder.global_position)
+			
+		if !event.pressed:
+			self.build_path_end = terrain.local_to_map(self.placeholder.global_position)
+			self._build_platform()
+
+func _physics_process(_delta):
+	self._move_placeholder()
 
 func _dispatch_train(position: Vector2, rail_id: int):
 	var new_train: Train = train_model.instantiate()
@@ -69,3 +84,22 @@ func _wait_for_next_person(callback) -> void:
 	)
 	add_child(wait)
 	wait.start()
+
+func _move_placeholder() -> void:
+	var global_position = get_viewport().get_mouse_position() 
+	var placeholder_position_x = floorf(global_position.x / 16) * 16.0 + 8
+	var placeholder_position_y = floorf(global_position.y / 16) * 16.0 + 8
+	placeholder.global_position = Vector2(placeholder_position_x, placeholder_position_y)
+
+func _build_platform() -> void:
+	var min_x = minf(self.build_path_start.x, self.build_path_end.x)
+	var max_x = maxf(self.build_path_start.x, self.build_path_end.x)
+	var min_y = minf(self.build_path_start.y, build_path_end.y)
+	var max_y = maxf(self.build_path_start.y, self.build_path_end.y)
+	
+	var connect = []
+	for x in range(min_x, max_x + 1, 1):
+		for y in range(min_y, max_y + 1, 1):
+			connect.append(Vector2(x, y))
+			
+	self.terrain.set_cells_terrain_connect(0, connect, 0, 1)
