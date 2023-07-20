@@ -1,11 +1,16 @@
 class_name Person
 extends CharacterBody2D
 
+signal person_board_train
+
 @onready var navigation_agent := $NavigationAgent2D as NavigationAgent2D
 @onready var moving := true
 
 var target_position: Vector2
 var desired_train: int
+
+func _ready() -> void:
+	EventBus.register_signal(self.person_board_train)
 
 func _physics_process(_delta):
 	if target_position == null: return
@@ -34,4 +39,5 @@ func set_desired_train(id: int) -> void:
 	self.desired_train = id
 
 func board_train() -> void:
+	self.person_board_train.emit()
 	self.call_deferred('queue_free')
