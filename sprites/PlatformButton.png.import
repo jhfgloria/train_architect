@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bccqxqddyqpnh"
-path="res://.godot/imported/Floor.png-219e90a20ec678243d430384e4179502.ctex"
+uid="uid://feu1pcv4u7a1"
+path="res://.godot/imported/PlatformButton.png-fdfedb06f3acc578bddfd1a26021f173.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Floor.png"
-dest_files=["res://.godot/imported/Floor.png-219e90a20ec678243d430384e4179502.ctex"]
+source_file="res://sprites/PlatformButton.png"
+dest_files=["res://.godot/imported/PlatformButton.png-fdfedb06f3acc578bddfd1a26021f173.ctex"]
 
 [params]
 

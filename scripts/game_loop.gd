@@ -4,6 +4,8 @@ extends Node2D
 @onready var rails_collection = $Rails as Node2D
 @onready var terrain = $Tiles as TileMap
 @onready var placeholder = $Placeholder as Node2D
+@onready var selection_area = $"Selection Area" as ColorRect
+@onready var build_tool = BuildTool.new()
 
 var person_model = preload("res://scenes/person.tscn") as PackedScene
 var train_model = preload("res://scenes/train.tscn") as PackedScene
@@ -13,17 +15,45 @@ var taken_positions: Array[Vector2] = []
 var build_path_start: Vector2
 var build_path_end: Vector2
 
+var area_selection_first_position = null
+var area_selection_final_position = null
+
 func _ready():
-	_build_rail(Vector2(240, 120))
+	_build_rail(120)
 
 func _input(event: InputEvent):
 	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				if build_tool.building_unit == BuildTool.BuildingUnit.PLATFORM:
+					self.build_path_start = terrain.local_to_map(self.placeholder.global_position)
+
+				elif build_tool.building_unit == BuildTool.BuildingUnit.RAIL:
+					if build_tool.can_build(BuildTool.BuildingUnit.RAIL, self.placeholder.global_position):
+						_build_rail(self.placeholder.global_position.y)
+					
+			if !event.pressed:
+				if build_tool.building_unit == BuildTool.BuildingUnit.PLATFORM:
+					if build_tool.can_build(BuildTool.BuildingUnit.RAIL, self.placeholder.global_position):
+						self.build_path_end = terrain.local_to_map(self.placeholder.global_position)
+						self._build_platform()
+
+	if event is InputEventMouseButton:
 		if event.pressed:
-			self.build_path_start = terrain.local_to_map(self.placeholder.global_position)
-			
+			if self.area_selection_first_position == null:
+				self.area_selection_first_position = self.placeholder.global_position - Vector2(8, 8)
+
 		if !event.pressed:
-			self.build_path_end = terrain.local_to_map(self.placeholder.global_position)
-			self._build_platform()
+			self.area_selection_first_position = null
+			self.area_selection_final_position = null
+			self.selection_area.visible = false
+			self.selection_area.size = Vector2.ZERO
+			self.selection_area.position = Vector2.ZERO
+
+	if event is InputEventMouseMotion:
+		if self.area_selection_first_position != null:
+			self.area_selection_final_position = self.placeholder.global_position - Vector2(8, 8)
+			self._draw_selection_area()
 
 func _physics_process(_delta):
 	self._move_placeholder()
@@ -34,11 +64,11 @@ func _dispatch_train(position: Vector2, rail_id: int):
 	new_train.set_rail_id(rail_id) 
 	add_child(new_train)
 
-func _build_rail(position: Vector2) -> void:
+func _build_rail(position_y: float) -> void:
 	var next_id = rails_collection.get_children().size()
 	var rail = rail_model.instantiate() as Rail
 	rail.set_id(next_id)
-	rail.position = position
+	rail.position = Vector2(240, position_y)
 	rails_collection.add_child(rail)
 	rail.call_people.connect(_call_people)
 	rail.dispatch_train.connect(_dispatch_train)
@@ -103,3 +133,10 @@ func _build_platform() -> void:
 			connect.append(Vector2(x, y))
 			
 	self.terrain.set_cells_terrain_connect(0, connect, 0, 1)
+
+func _draw_selection_area() -> void:
+	self.selection_area.visible = true
+	var min = VectorUtils.min_axis(self.area_selection_first_position, self.area_selection_final_position)
+	var max = VectorUtils.max_axis(self.area_selection_first_position, self.area_selection_final_position)
+	self.selection_area.position = Vector2(min.x, min.y)
+	self.selection_area.size = Vector2(max.x - min.x, max.y - min.y) + Vector2(16, 16)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bccqxqddyqpnh"
-path="res://.godot/imported/Floor.png-219e90a20ec678243d430384e4179502.ctex"
+uid="uid://bn7g7tix7rjfj"
+path="res://.godot/imported/RailsButton.png-154c42e0f7e72c0b30f29fcfad85873f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Floor.png"
-dest_files=["res://.godot/imported/Floor.png-219e90a20ec678243d430384e4179502.ctex"]
+source_file="res://sprites/RailsButton.png"
+dest_files=["res://.godot/imported/RailsButton.png-154c42e0f7e72c0b30f29fcfad85873f.ctex"]
 
 [params]
 
