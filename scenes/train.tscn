@@ -57,6 +57,12 @@ collision_mask = 16
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pickup Area"]
 shape = SubResource("RectangleShape2D_q88ua")
 
+[node name="door_one" type="Node2D" parent="."]
+position = Vector2(-182, -11)
+
+[node name="door_two" type="Node2D" parent="."]
+position = Vector2(-78, -11)
+
 [connection signal="area_shape_entered" from="Pickup Position" to="." method="_on_pickup_position_area_shape_entered"]
 [connection signal="area_shape_entered" from="Exit Position" to="." method="_on_exit_position_area_shape_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

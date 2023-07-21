@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Station Simluator"
 run/main_scene="res://scenes/main_scene.tscn"
-config/features=PackedStringArray("4.1", "Forward Plus")
+config/features=PackedStringArray("4.0", "Forward Plus")
 boot_splash/bg_color=Color(0.796078, 0.635294, 0.745098, 1)
 config/icon="res://icon.svg"
 
@@ -25,7 +25,6 @@ VectorUtils="*res://scripts/vector_utils.gd"
 
 window/size/viewport_width=480
 window/size/viewport_height=320
-window/size/mode=2
 window/stretch/mode="viewport"
 
 [dotnet]

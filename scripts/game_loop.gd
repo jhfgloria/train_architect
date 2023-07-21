@@ -1,5 +1,9 @@
 extends Node2D
 
+# Game Loop Signals
+signal game_debit(delta: int)
+signal game_credit(delta: int)
+# Game Loop Components
 @onready var station = $Station as Station
 @onready var rails_collection = $Rails as Node2D
 @onready var terrain = $Tiles as TileMap
@@ -9,7 +13,7 @@ extends Node2D
 @onready var clock_timer = $"Clock Timer" as Timer
 @onready var clock_label = $"HUD/Time Label" as Label
 @onready var build_tool = BuildTool.new()
-
+# Scene preloads
 var person_model = preload("res://scenes/person.tscn") as PackedScene
 var train_model = preload("res://scenes/train.tscn") as PackedScene
 var rail_model = preload("res://scenes/rail.tscn") as PackedScene
@@ -21,14 +25,17 @@ var build_path_end: Vector2
 var area_selection_first_position = null
 var area_selection_final_position = null
 
-var budget: int = 1000
+var budget: int = 0
 var time: int = 700
 
 func _ready():
 	self._set_time()
 	self._build_rail(120, 0)
-	self.budget_value.text = String.num_int64(budget)
-	EventBus.person_board_train_sig.connect(func c(): _credit(25))
+	self._credit(1000)
+	EventBus.register_signal(game_debit)
+	EventBus.register_signal(game_credit)
+	EventBus.person_board_train_sig.connect(func c(_p): _credit(25))
+	EventBus.person_board_train_sig.connect(self._free_position)
 
 func _input(event: InputEvent):
 	if event is InputEventMouseButton:
@@ -141,7 +148,7 @@ func _build_rail(position_y: float, cost = 250) -> void:
 	rail.set_id(next_id)
 	rail.position = Vector2(240, position_y)
 	rails_collection.add_child(rail)
-	rail.call_people.connect(_call_people)
+	rail.rail_call_people.connect(_call_people)
 	rail.dispatch_train.connect(_dispatch_train)
 	self._debit(cost)
 
@@ -153,12 +160,14 @@ func _draw_selection_area() -> void:
 	self.selection_area.size = Vector2(max.x - min.x, max.y - min.y) + Vector2(16, 16)
 
 func _debit(amount: int) -> void:
+	self.game_debit.emit(-amount)
 	self.budget -= amount
-	self.budget_value.set_text(String.num_int64(self.budget))
+	self.budget_value.set_text("$" + String.num_int64(self.budget))
 
 func _credit(amount: int) -> void:
+	self.game_credit.emit(amount)
 	self.budget += amount
-	self.budget_value.set_text(String.num_int64(self.budget))
+	self.budget_value.set_text("$" + String.num_int64(self.budget))
 
 func _on_clock_timer_timeout():
 	self.time += 100
@@ -176,3 +185,6 @@ func _set_time() -> void:
 		str_time = "0000"
 	
 	clock_label.set_text(str_time[0]+str_time[1]+":"+str_time[2]+str_time[3])
+
+func _free_position(position: Vector2) -> void:
+	self.taken_positions.erase(position)
