@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://0patkwxygy7a"]
+[gd_scene load_steps=7 format=3 uid="uid://0patkwxygy7a"]
 
 [ext_resource type="Script" path="res://scripts/train.gd" id="1_rd6qo"]
 [ext_resource type="Texture2D" uid="uid://fidil5q2pk1b" path="res://sprites/Train.png" id="2_miii6"]
+[ext_resource type="AudioStream" uid="uid://00s6gmfdcanh" path="res://audio/train-horn-jakarta-indonesia-940316-36328.mp3" id="3_wvjrh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_70b2h"]
 size = Vector2(19.7222, 12.1429)
@@ -62,6 +63,11 @@ position = Vector2(-182, -11)
 
 [node name="door_two" type="Node2D" parent="."]
 position = Vector2(-78, -11)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_wvjrh")
+volume_db = -40.0
+autoplay = true
 
 [connection signal="area_shape_entered" from="Pickup Position" to="." method="_on_pickup_position_area_shape_entered"]
 [connection signal="area_shape_entered" from="Exit Position" to="." method="_on_exit_position_area_shape_entered"]

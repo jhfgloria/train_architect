@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://du3jvraoqvccm"]
+[gd_scene load_steps=38 format=3 uid="uid://du3jvraoqvccm"]
 
 [ext_resource type="Script" path="res://scripts/game_loop.gd" id="1_m2ygn"]
 [ext_resource type="Texture2D" uid="uid://bccqxqddyqpnh" path="res://sprites/Floor.png" id="2_od070"]
@@ -13,6 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://bl4ycnaedkbvy" path="res://sprites/RailsButton--Pressed.png" id="10_6gktv"]
 [ext_resource type="Theme" uid="uid://b1quvik34uwr5" path="res://themes/pixel_theme.tres" id="12_58dhx"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="12_lmhyx"]
+[ext_resource type="AudioStream" uid="uid://cv886y6r6uboh" path="res://audio/funny-friends-15545.mp3" id="14_rxkb6"]
+[ext_resource type="AudioStream" uid="uid://bdijgo48irk8t" path="res://audio/cover-floor-hitting-37384.mp3" id="15_gsg21"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_y7fn8"]
 vertices = PackedVector2Array(-8, -8, 8, -8, 8, 2.5, 3.5, 8, -8, 8)
@@ -313,6 +315,7 @@ texture = ExtResource("2_od070")
 1:4/0/terrain = 1
 1:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:4/0/physics_layer_0/angular_velocity = 0.0
+1:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5.5, 4.5, -8, 4.5, -8, 8, -5.5, 8)
 1:4/0/terrains_peering_bit/right_side = 1
 1:4/0/terrains_peering_bit/bottom_right_corner = 1
 1:4/0/terrains_peering_bit/bottom_side = 1
@@ -326,6 +329,7 @@ texture = ExtResource("2_od070")
 0:4/0/terrain = 1
 0:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:4/0/physics_layer_0/angular_velocity = 0.0
+0:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(5.5, 4.5, 8, 4.5, 8, 8, 5.5, 8)
 0:4/0/terrains_peering_bit/right_side = 1
 0:4/0/terrains_peering_bit/bottom_side = 1
 0:4/0/terrains_peering_bit/bottom_left_corner = 1
@@ -339,6 +343,7 @@ texture = ExtResource("2_od070")
 0:5/0/terrain = 1
 0:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:5/0/physics_layer_0/angular_velocity = 0.0
+0:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(5.5, -4.5, 8, -4.5, 8, -8, 5.5, -8)
 0:5/0/terrains_peering_bit/right_side = 1
 0:5/0/terrains_peering_bit/bottom_right_corner = 1
 0:5/0/terrains_peering_bit/bottom_side = 1
@@ -352,6 +357,7 @@ texture = ExtResource("2_od070")
 1:5/0/terrain = 1
 1:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:5/0/physics_layer_0/angular_velocity = 0.0
+1:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5.5, -4.5, -8, -4.5, -8, -8, -5.5, -8)
 1:5/0/terrains_peering_bit/right_side = 1
 1:5/0/terrains_peering_bit/bottom_right_corner = 1
 1:5/0/terrains_peering_bit/bottom_side = 1
@@ -490,7 +496,18 @@ one_shot = true
 wait_time = 2.0
 autostart = true
 
+[node name="Back music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_rxkb6")
+volume_db = -40.0
+autoplay = true
+attenuation = 4.75683
+
+[node name="platform_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_gsg21")
+volume_db = -20.0
+
 [connection signal="pressed" from="Build Menu/Platform Button" to="Build Menu" method="_on_platform_button_pressed"]
 [connection signal="pressed" from="Build Menu/Rail Button" to="Build Menu" method="_on_rail_button_pressed"]
 [connection signal="timeout" from="HUD/budget_variation_timer" to="HUD" method="_on_budget_variation_timer_timeout"]
 [connection signal="timeout" from="Clock Timer" to="." method="_on_clock_timer_timeout"]
+[connection signal="finished" from="Back music" to="." method="_on_back_music_finished"]

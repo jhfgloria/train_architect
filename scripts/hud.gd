@@ -11,7 +11,7 @@ var _budget_variation = 0
 
 func _ready() -> void:
 	EventBus.rail_call_people_sig.connect(self._train_pop_up)
-	EventBus.person_reached_position_sig.connect(self._ticket_pop_up)
+	EventBus.person_board_train_sig.connect(self._ticket_pop_up)
 	EventBus.game_debit_broadcast.connect(self._update_budget_variation)
 	EventBus.game_credit_broadcast.connect(self._update_budget_variation)
 

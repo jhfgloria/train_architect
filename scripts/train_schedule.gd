@@ -10,6 +10,9 @@ signal call_people_to_station
 signal dispatch_train
 
 func _ready() -> void:
+	self._announce_train()
+	
+func _announce_train() -> void:
 	announcing_timer.wait_time = _next_train()
 	announcing_timer.one_shot = true
 	announcing_timer.start()
@@ -25,3 +28,5 @@ func _call_people_to_station() -> void:
 
 func _dispatch_train() -> void:
 	dispatch_train.emit()
+	await get_tree().create_timer(15.0).timeout
+	self._announce_train()

@@ -1,15 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://c2ct1cnlbnswc"]
+[gd_scene load_steps=7 format=3 uid="uid://c2ct1cnlbnswc"]
 
 [ext_resource type="Texture2D" uid="uid://cvxmavoxsxovq" path="res://sprites/Rail.png" id="1_8qsfk"]
-[ext_resource type="Script" path="res://scenes/rail.gd" id="1_ed1yx"]
+[ext_resource type="Script" path="res://scripts/rail.gd" id="1_udaxd"]
 [ext_resource type="PackedScene" uid="uid://c8sflbb3glten" path="res://scenes/train_schedule.tscn" id="2_w0n7x"]
+[ext_resource type="AudioStream" uid="uid://c65xrlhsau8lq" path="res://audio/mixkit-light-hammering-on-metal-798.wav" id="4_ygd1e"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ep64n"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4i31j"]
 
 [node name="Rail" type="Node2D"]
-script = ExtResource("1_ed1yx")
+script = ExtResource("1_udaxd")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_8qsfk")
@@ -34,3 +35,7 @@ scale = Vector2(0.201392, 0.196774)
 shape = SubResource("CircleShape2D_4i31j")
 
 [node name="Train Schedule" parent="." instance=ExtResource("2_w0n7x")]
+
+[node name="construction_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_ygd1e")
+volume_db = -30.0

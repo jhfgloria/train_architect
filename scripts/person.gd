@@ -43,4 +43,5 @@ func set_desired_train(id: int) -> void:
 
 func board_train() -> void:
 	self.person_board_train.emit(self.target_position)
+	await get_tree().create_timer(2.0).timeout
 	self.call_deferred('queue_free')

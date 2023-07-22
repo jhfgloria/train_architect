@@ -30,7 +30,7 @@ var time: int = 700
 
 func _ready():
 	self._set_time()
-	self._build_rail(120, 0)
+	self._build_rail(120, 0, false)
 	self._credit(1000)
 	EventBus.register_signal(game_debit)
 	EventBus.register_signal(game_credit)
@@ -140,12 +140,14 @@ func _build_platform() -> void:
 			connect.append(Vector2(x, y))
 	
 	self.terrain.set_cells_terrain_connect(0, connect, 0, 1)
+	$platform_sfx.play()
 	self._debit(50 * connect.size())
 
-func _build_rail(position_y: float, cost = 250) -> void:
+func _build_rail(position_y: float, cost = 250, sound = true) -> void:
 	var next_id = rails_collection.get_children().size()
 	var rail = rail_model.instantiate() as Rail
 	rail.set_id(next_id)
+	rail.set_play_sound(sound)
 	rail.position = Vector2(240, position_y)
 	rails_collection.add_child(rail)
 	rail.rail_call_people.connect(_call_people)
@@ -188,3 +190,6 @@ func _set_time() -> void:
 
 func _free_position(position: Vector2) -> void:
 	self.taken_positions.erase(position)
+
+func _on_back_music_finished():
+	$"Back music".play()
