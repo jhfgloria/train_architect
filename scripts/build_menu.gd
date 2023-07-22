@@ -25,7 +25,7 @@ func _on_rail_button_pressed():
 func _on_rail_button_mouse_entered():
 	self.building_details.set_texture(self.rail_details)
 	self.building_details.position = self.rail_button.position + Vector2(24, -16)
-	self.building_details.visible = true
+	self.building_details.visible = true	
 
 func _on_platform_button_mouse_entered():
 	self.building_details.set_texture(self.platform_details)

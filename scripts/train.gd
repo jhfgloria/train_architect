@@ -5,6 +5,7 @@ extends StaticBody2D
 @onready var pickup_area = $"Pickup Area" as Area2D
 @onready var door_one = $door_one as Node2D
 @onready var door_two = $door_two as Node2D
+@onready var timer = $Timer as Timer
 # Trains privates
 var base_speed = 60
 var pick_up = false
@@ -15,6 +16,8 @@ var rail_id: int
 
 func _ready() -> void:
 	EventBus.person_board_train_sig.connect(self._show_people_aboard)
+	EventBus.game_pause_broadcast.connect(self._pause_timers)
+	EventBus.game_resume_broadcast.connect(self._resume_timers)
 	pickup_area.monitoring = false
 
 func _physics_process(delta):
@@ -31,14 +34,12 @@ func _process(_delta):
 func _on_pickup_position_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
 	pickup_area.monitoring = true
 	pick_up = true
-	$Timer.start()
-
+	self.timer.start()
 
 func _on_timer_timeout():
 	pickup_area.monitoring = false
 	pick_up = false
 	speed = base_speed * 2
-
 
 func _on_exit_position_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
 	self.queue_free()
@@ -61,3 +62,9 @@ func _show_people_aboard(_p, train_id: int) -> void:
 	person_two.position = self.door_two.position + Vector2(0, -8)
 	self.add_child(person_one)
 	self.add_child(person_two)
+
+func _pause_timers() -> void:
+	self.timer.set_paused(true)
+
+func _resume_timers() -> void:
+	self.timer.set_paused(false)

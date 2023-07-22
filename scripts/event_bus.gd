@@ -21,5 +21,11 @@ func game_debit(delta: int) -> void: game_debit_broadcast.emit(delta)
 signal game_credit_broadcast(delta: int)
 func game_credit(delta: int) -> void: game_credit_broadcast.emit(delta)
 
+signal game_pause_broadcast()
+func game_pause() -> void: game_pause_broadcast.emit()
+
+signal game_resume_broadcast()
+func game_resume() -> void: game_resume_broadcast.emit()
+
 func register_signal(custom_signal: Signal) -> void:
 	custom_signal.connect(Callable(self, custom_signal.get_name()))

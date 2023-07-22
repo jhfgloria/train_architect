@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://du3jvraoqvccm"]
+[gd_scene load_steps=41 format=3 uid="uid://du3jvraoqvccm"]
 
 [ext_resource type="Script" path="res://scripts/game_loop.gd" id="1_m2ygn"]
 [ext_resource type="Texture2D" uid="uid://bccqxqddyqpnh" path="res://sprites/Floor.png" id="2_od070"]
@@ -16,6 +16,8 @@
 [ext_resource type="Script" path="res://scripts/hud.gd" id="12_lmhyx"]
 [ext_resource type="AudioStream" uid="uid://cv886y6r6uboh" path="res://audio/funny-friends-15545.mp3" id="14_rxkb6"]
 [ext_resource type="AudioStream" uid="uid://bdijgo48irk8t" path="res://audio/cover-floor-hitting-37384.mp3" id="15_gsg21"]
+[ext_resource type="Texture2D" uid="uid://cck112bviv3m1" path="res://sprites/budget-warning.png" id="17_4shbc"]
+[ext_resource type="Texture2D" uid="uid://cxebxpowixogs" path="res://sprites/game_over.png" id="18_kmd8w"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_y7fn8"]
 vertices = PackedVector2Array(-8, -8, 8, -8, 8, 2.5, 3.5, 8, -8, 8)
@@ -510,7 +512,6 @@ wait_time = 2.0
 one_shot = true
 
 [node name="Clock Timer" type="Timer" parent="."]
-wait_time = 5.0
 autostart = true
 
 [node name="Back music" type="AudioStreamPlayer2D" parent="."]
@@ -523,6 +524,52 @@ attenuation = 4.75683
 stream = ExtResource("15_gsg21")
 volume_db = -20.0
 
+[node name="Button" type="Button" parent="."]
+offset_left = 72.0
+offset_top = 296.0
+offset_right = 80.0
+offset_bottom = 304.0
+text = "Pause"
+
+[node name="Button2" type="Button" parent="."]
+offset_left = 344.0
+offset_top = 296.0
+offset_right = 414.0
+offset_bottom = 327.0
+text = "Resume"
+
+[node name="budget_warning" type="Node2D" parent="."]
+visible = false
+z_index = 4096
+position = Vector2(240, 160)
+
+[node name="Sprite2D" type="Sprite2D" parent="budget_warning"]
+texture = ExtResource("17_4shbc")
+
+[node name="TextureButton" type="TextureButton" parent="budget_warning"]
+offset_left = -51.0
+offset_top = 75.0
+offset_right = -11.0
+offset_bottom = 115.0
+scale = Vector2(2.56, 0.559997)
+ignore_texture_size = true
+
+[node name="game_over" type="Node2D" parent="."]
+visible = false
+z_index = 4096
+position = Vector2(240, 160)
+
+[node name="Sprite2D" type="Sprite2D" parent="game_over"]
+texture = ExtResource("18_kmd8w")
+
+[node name="TextureButton" type="TextureButton" parent="game_over"]
+offset_left = -51.0
+offset_top = 75.0
+offset_right = -11.0
+offset_bottom = 115.0
+scale = Vector2(2.56, 0.559997)
+ignore_texture_size = true
+
 [connection signal="mouse_entered" from="Build Menu/Platform Button" to="Build Menu" method="_on_platform_button_mouse_entered"]
 [connection signal="mouse_exited" from="Build Menu/Platform Button" to="Build Menu" method="_on_platform_button_mouse_exited"]
 [connection signal="pressed" from="Build Menu/Platform Button" to="Build Menu" method="_on_platform_button_pressed"]
@@ -532,3 +579,7 @@ volume_db = -20.0
 [connection signal="timeout" from="HUD/budget_variation_timer" to="HUD" method="_on_budget_variation_timer_timeout"]
 [connection signal="timeout" from="Clock Timer" to="." method="_on_clock_timer_timeout"]
 [connection signal="finished" from="Back music" to="." method="_on_back_music_finished"]
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
+[connection signal="button_down" from="Button2" to="." method="_on_button_2_button_down"]
+[connection signal="button_down" from="budget_warning/TextureButton" to="." method="_on_texture_button_button_down"]
+[connection signal="button_down" from="game_over/TextureButton" to="." method="_on_texture_button_button_down"]

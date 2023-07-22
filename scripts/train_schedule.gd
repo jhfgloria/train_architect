@@ -10,6 +10,8 @@ signal call_people_to_station
 signal dispatch_train
 
 func _ready() -> void:
+	EventBus.game_pause_broadcast.connect(self._pause_timers)
+	EventBus.game_resume_broadcast.connect(self._resume_timers)
 	self._announce_train()
 	
 func _announce_train() -> void:
@@ -30,3 +32,11 @@ func _dispatch_train() -> void:
 	dispatch_train.emit()
 	await get_tree().create_timer(15.0).timeout
 	self._announce_train()
+
+func _pause_timers() -> void:
+	self.announcing_timer.set_paused(true)
+	self.dispatch_timer.set_paused(true)
+
+func _resume_timers() -> void:
+	self.announcing_timer.set_paused(false)
+	self.dispatch_timer.set_paused(false)

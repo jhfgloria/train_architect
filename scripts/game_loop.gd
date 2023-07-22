@@ -3,6 +3,8 @@ extends Node2D
 # Game Loop Signals
 signal game_debit(delta: int)
 signal game_credit(delta: int)
+signal game_pause()
+signal game_resume()
 # Game Loop Components
 @onready var station = $Station as Station
 @onready var rails_collection = $Rails as Node2D
@@ -12,8 +14,11 @@ signal game_credit(delta: int)
 @onready var budget_value = $"HUD/Budget Value" as Label
 @onready var clock_timer = $"Clock Timer" as Timer
 @onready var clock_label = $"HUD/Time Label" as Label
-@onready var day_label = $HUD/day_label as Label 
+@onready var day_label = $HUD/day_label as Label
 @onready var build_tool = BuildTool.new()
+@onready var budget_warning = $budget_warning as Node2D
+@onready var game_over = $game_over as Node2D
+@onready var build_menu = $"Build Menu" as Node2D
 # Scene preloads
 var person_model = preload("res://scenes/person.tscn") as PackedScene
 var train_model = preload("res://scenes/train.tscn") as PackedScene
@@ -27,16 +32,19 @@ var area_selection_first_position = null
 var area_selection_final_position = null
 
 var budget: int = 0
-var time: int = 700
+var time: int = 2000
 var day = 1
+var is_game_over = false
 
 func _ready():
 	self._set_time()
 	self._set_date()
 	self._build_rail(120, 0, false)
-	self._credit(1000)
-	EventBus.register_signal(game_debit)
-	EventBus.register_signal(game_credit)
+	self._credit(800)
+	EventBus.register_signal(self.game_debit)
+	EventBus.register_signal(self.game_credit)
+	EventBus.register_signal(self.game_pause)
+	EventBus.register_signal(self.game_resume)
 	EventBus.person_board_train_sig.connect(func c(_p, _t): _credit(25))
 	EventBus.person_board_train_sig.connect(self._free_position)
 
@@ -208,3 +216,45 @@ func _on_back_music_finished():
 func _process_costs() -> void:
 	var rails_count: int = self.rails_collection.get_children().size()
 	self._debit(rails_count * 1200)
+	
+	if self.budget < 0:
+		self._pause_game()
+		if not self.is_game_over:
+			self.is_game_over = true
+			self._warn_about_budget()
+		else:
+			self._game_over()
+	else:
+		self._is_game_over = false
+
+func _pause_game() -> void:
+	self.clock_timer.set_paused(true)
+	self.game_pause.emit()
+
+func _resume_game() -> void:
+	self.clock_timer.set_paused(false)
+	self.game_resume.emit()
+
+func _on_button_button_down():
+	self._pause_game()
+
+func _on_button_2_button_down():
+	self._resume_game()
+
+func _on_texture_button_button_down():
+	self._dismiss_budget_warning()
+	self._resume_game()
+
+func _warn_about_budget():
+	self.budget_warning.visible = true
+	self.build_tool.building_unit = BuildTool.BuildingUnit.NONE
+	self.build_menu.visible = false
+
+func _game_over():
+	self.game_over.visible = true
+	self.build_tool.building_unit = BuildTool.BuildingUnit.NONE
+	self.build_menu.visible = false
+
+func _dismiss_budget_warning():
+	self.budget_warning.visible = false
+	self.build_menu.visible = true
