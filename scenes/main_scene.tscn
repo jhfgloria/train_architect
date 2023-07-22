@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://du3jvraoqvccm"]
+[gd_scene load_steps=39 format=3 uid="uid://du3jvraoqvccm"]
 
 [ext_resource type="Script" path="res://scripts/game_loop.gd" id="1_m2ygn"]
 [ext_resource type="Texture2D" uid="uid://bccqxqddyqpnh" path="res://sprites/Floor.png" id="2_od070"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bn7g7tix7rjfj" path="res://sprites/RailsButton.png" id="8_fi4lj"]
 [ext_resource type="Texture2D" uid="uid://d1wam74l75817" path="res://sprites/PlatformButton--Pressed.png" id="9_mpwgn"]
 [ext_resource type="Texture2D" uid="uid://bl4ycnaedkbvy" path="res://sprites/RailsButton--Pressed.png" id="10_6gktv"]
+[ext_resource type="Texture2D" uid="uid://c16tnohwcmfa7" path="res://sprites/building_details--rail.png" id="11_8q4e4"]
 [ext_resource type="Theme" uid="uid://b1quvik34uwr5" path="res://themes/pixel_theme.tres" id="12_58dhx"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="12_lmhyx"]
 [ext_resource type="AudioStream" uid="uid://cv886y6r6uboh" path="res://audio/funny-friends-15545.mp3" id="14_rxkb6"]
@@ -434,7 +435,7 @@ texture_hover = ExtResource("9_mpwgn")
 texture_focused = ExtResource("9_mpwgn")
 stretch_mode = 4
 
-[node name="Rail Button" type="TextureButton" parent="Build Menu"]
+[node name="rail_button" type="TextureButton" parent="Build Menu"]
 offset_left = -49.0
 offset_top = -16.0
 offset_right = -1.0
@@ -444,6 +445,11 @@ texture_normal = ExtResource("8_fi4lj")
 texture_hover = ExtResource("10_6gktv")
 texture_focused = ExtResource("10_6gktv")
 stretch_mode = 4
+
+[node name="building_details" type="Sprite2D" parent="Build Menu"]
+visible = false
+position = Vector2(-24, -32)
+texture = ExtResource("11_8q4e4")
 
 [node name="Selection Area" type="ColorRect" parent="."]
 visible = false
@@ -459,9 +465,9 @@ script = SubResource("GDScript_tv8in")
 script = ExtResource("12_lmhyx")
 
 [node name="Budget Value" type="Label" parent="HUD"]
-offset_left = 54.0
+offset_left = 32.0
 offset_top = 17.0
-offset_right = 136.0
+offset_right = 114.0
 offset_bottom = 37.0
 scale = Vector2(0.7, 0.7)
 theme = ExtResource("12_58dhx")
@@ -470,19 +476,30 @@ horizontal_alignment = 2
 
 [node name="Time Label" type="Label" parent="HUD"]
 layout_direction = 2
-offset_left = 416.0
+offset_left = 392.0
 offset_top = 17.0
-offset_right = 464.0
-offset_bottom = 40.0
+offset_right = 472.0
+offset_bottom = 36.0
 scale = Vector2(0.7, 0.7)
 theme = ExtResource("12_58dhx")
-text = "900"
+text = "09:00"
+horizontal_alignment = 2
+
+[node name="day_label" type="Label" parent="HUD"]
+layout_direction = 2
+offset_left = 328.0
+offset_top = 32.0
+offset_right = 568.0
+offset_bottom = 51.0
+scale = Vector2(0.5, 0.5)
+theme = ExtResource("12_58dhx")
+text = "Day 2"
 horizontal_alignment = 2
 
 [node name="Budget Variation" type="Label" parent="HUD"]
-offset_left = 63.0
+offset_left = 8.0
 offset_top = 31.0
-offset_right = 159.0
+offset_right = 170.0
 offset_bottom = 51.0
 scale = Vector2(0.5, 0.5)
 theme = ExtResource("12_58dhx")
@@ -493,7 +510,7 @@ wait_time = 2.0
 one_shot = true
 
 [node name="Clock Timer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 5.0
 autostart = true
 
 [node name="Back music" type="AudioStreamPlayer2D" parent="."]
@@ -506,8 +523,12 @@ attenuation = 4.75683
 stream = ExtResource("15_gsg21")
 volume_db = -20.0
 
+[connection signal="mouse_entered" from="Build Menu/Platform Button" to="Build Menu" method="_on_platform_button_mouse_entered"]
+[connection signal="mouse_exited" from="Build Menu/Platform Button" to="Build Menu" method="_on_platform_button_mouse_exited"]
 [connection signal="pressed" from="Build Menu/Platform Button" to="Build Menu" method="_on_platform_button_pressed"]
-[connection signal="pressed" from="Build Menu/Rail Button" to="Build Menu" method="_on_rail_button_pressed"]
+[connection signal="mouse_entered" from="Build Menu/rail_button" to="Build Menu" method="_on_rail_button_mouse_entered"]
+[connection signal="mouse_exited" from="Build Menu/rail_button" to="Build Menu" method="_on_rail_button_mouse_exited"]
+[connection signal="pressed" from="Build Menu/rail_button" to="Build Menu" method="_on_rail_button_pressed"]
 [connection signal="timeout" from="HUD/budget_variation_timer" to="HUD" method="_on_budget_variation_timer_timeout"]
 [connection signal="timeout" from="Clock Timer" to="." method="_on_clock_timer_timeout"]
 [connection signal="finished" from="Back music" to="." method="_on_back_music_finished"]

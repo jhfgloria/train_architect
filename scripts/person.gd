@@ -1,7 +1,7 @@
 class_name Person
 extends CharacterBody2D
 
-signal person_board_train(position: Vector2)
+signal person_board_train(position: Vector2, train_id: int)
 signal person_reached_position(position: Vector2)
 
 @onready var navigation_agent := $NavigationAgent2D as NavigationAgent2D
@@ -24,6 +24,9 @@ func _physics_process(_delta):
 		move_and_slide()
 		check_target()
 
+func _process(_delta):
+	self.z_index = self.position.y
+
 func check_target():
 	var diff: Vector2 = global_position - target_position
 	
@@ -42,6 +45,6 @@ func set_desired_train(id: int) -> void:
 	self.desired_train = id
 
 func board_train() -> void:
-	self.person_board_train.emit(self.target_position)
+	self.person_board_train.emit(self.target_position, self.desired_train)
 	await get_tree().create_timer(2.0).timeout
 	self.call_deferred('queue_free')

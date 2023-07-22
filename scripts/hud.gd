@@ -19,12 +19,13 @@ func _train_pop_up(position: Vector2, _t: int) -> void:
 	var pop_up = self._create_pop_up(position - Vector2(230, 20), train_balloon_texture)
 	self._remove_pop_up(pop_up)
 
-func _ticket_pop_up(position: Vector2) -> void:
+func _ticket_pop_up(position: Vector2, _t: int) -> void:
 	var pop_up = self._create_pop_up(position - Vector2(0, 28), ticket_balloon_texture)
 	self._remove_pop_up(pop_up)
 
 func _create_pop_up(position: Vector2, texture: Texture2D) -> Sprite2D:
 	var pop_up = Sprite2D.new()
+	pop_up.z_index = position.y + 28
 	pop_up.set_texture(texture)
 	pop_up.set_position(position)
 	self.add_child(pop_up)

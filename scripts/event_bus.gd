@@ -6,8 +6,8 @@ func set_build_platform() -> void: set_build_platform_sig.emit()
 signal set_build_rails_sig
 func set_build_rails() -> void: set_build_rails_sig.emit()
 
-signal person_board_train_sig(position: Vector2)
-func person_board_train(position: Vector2) -> void: person_board_train_sig.emit(position)
+signal person_board_train_sig(position: Vector2, train_id: int)
+func person_board_train(position: Vector2, train_id: int) -> void: person_board_train_sig.emit(position, train_id)
 
 signal rail_call_people_sig(position: Vector2, train_id: int)
 func rail_call_people(position: Vector2, train_id: int) -> void: rail_call_people_sig.emit(position, train_id)

@@ -25,6 +25,8 @@ func _physics_process(delta):
 	else:
 		move_and_collide(velocity * delta)
 
+func _process(_delta):
+	self.z_index = self.position.y
 
 func _on_pickup_position_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
 	pickup_area.monitoring = true
@@ -48,7 +50,9 @@ func _on_pickup_area_body_entered(person: Person):
 	if person.desired_train == self.rail_id:
 		person.board_train()
 
-func _show_people_aboard(_p) -> void:
+func _show_people_aboard(_p, train_id: int) -> void:
+	if train_id != self.rail_id: return
+	
 	var person_one = Sprite2D.new()
 	var person_two = Sprite2D.new()
 	person_one.set_texture(self.person_texture)

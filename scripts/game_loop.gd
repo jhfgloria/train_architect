@@ -12,6 +12,7 @@ signal game_credit(delta: int)
 @onready var budget_value = $"HUD/Budget Value" as Label
 @onready var clock_timer = $"Clock Timer" as Timer
 @onready var clock_label = $"HUD/Time Label" as Label
+@onready var day_label = $HUD/day_label as Label 
 @onready var build_tool = BuildTool.new()
 # Scene preloads
 var person_model = preload("res://scenes/person.tscn") as PackedScene
@@ -27,14 +28,16 @@ var area_selection_final_position = null
 
 var budget: int = 0
 var time: int = 700
+var day = 1
 
 func _ready():
 	self._set_time()
+	self._set_date()
 	self._build_rail(120, 0, false)
 	self._credit(1000)
 	EventBus.register_signal(game_debit)
 	EventBus.register_signal(game_credit)
-	EventBus.person_board_train_sig.connect(func c(_p): _credit(25))
+	EventBus.person_board_train_sig.connect(func c(_p, _t): _credit(25))
 	EventBus.person_board_train_sig.connect(self._free_position)
 
 func _input(event: InputEvent):
@@ -173,9 +176,14 @@ func _credit(amount: int) -> void:
 
 func _on_clock_timer_timeout():
 	self.time += 100
-	if self.time == 2400: 
+	if self.time == 2400:
+		self.day += 1
 		self.time = 0
+
 	self._set_time()
+	self._set_date()
+	if (self.time == 0):
+		self._process_costs()
 
 func _set_time() -> void:
 	var str_time = String.num_int64(self.time)
@@ -188,8 +196,15 @@ func _set_time() -> void:
 	
 	clock_label.set_text(str_time[0]+str_time[1]+":"+str_time[2]+str_time[3])
 
-func _free_position(position: Vector2) -> void:
+func _set_date() -> void:
+	self.day_label.set_text("Day " + String.num_uint64(self.day))
+
+func _free_position(position: Vector2, _t: int) -> void:
 	self.taken_positions.erase(position)
 
 func _on_back_music_finished():
 	$"Back music".play()
+	
+func _process_costs() -> void:
+	var rails_count: int = self.rails_collection.get_children().size()
+	self._debit(rails_count * 1200)
