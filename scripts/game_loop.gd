@@ -32,7 +32,7 @@ var area_selection_first_position = null
 var area_selection_final_position = null
 
 var budget: int = 0
-var time: int = 2000
+var time: int = 800
 var day = 1
 var is_game_over = false
 
@@ -40,7 +40,7 @@ func _ready():
 	self._set_time()
 	self._set_date()
 	self._build_rail(120, 0, false)
-	self._credit(800)
+	self._credit(1000)
 	EventBus.register_signal(self.game_debit)
 	EventBus.register_signal(self.game_credit)
 	EventBus.register_signal(self.game_pause)
@@ -153,13 +153,18 @@ func _build_platform() -> void:
 	var max_y = maxf(self.build_path_start.y, self.build_path_end.y)
 	
 	var connect = []
+	var new_platform = 0
 	for x in range(min_x, max_x + 1, 1):
 		for y in range(min_y, max_y + 1, 1):
+			var tile_position = Vector2(x, y)
+			var tile_data = terrain.get_cell_tile_data(0, tile_position)
+			
+			if tile_data.terrain == 0: new_platform += 1
 			connect.append(Vector2(x, y))
 	
 	self.terrain.set_cells_terrain_connect(0, connect, 0, 1)
 	$platform_sfx.play()
-	self._debit(50 * connect.size())
+	self._debit(50 * new_platform)
 
 func _build_rail(position_y: float, cost = 250, sound = true) -> void:
 	var next_id = rails_collection.get_children().size()

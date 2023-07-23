@@ -27,5 +27,8 @@ func game_pause() -> void: game_pause_broadcast.emit()
 signal game_resume_broadcast()
 func game_resume() -> void: game_resume_broadcast.emit()
 
+signal person_no_path_available_broadcast(position: Vector2)
+func person_no_path_available(position: Vector2) -> void: person_no_path_available_broadcast.emit(position)
+
 func register_signal(custom_signal: Signal) -> void:
 	custom_signal.connect(Callable(self, custom_signal.get_name()))

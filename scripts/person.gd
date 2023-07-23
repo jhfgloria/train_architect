@@ -3,20 +3,27 @@ extends CharacterBody2D
 
 signal person_board_train(position: Vector2, train_id: int)
 signal person_reached_position(position: Vector2)
+signal person_no_path_available(position: Vector2)
 
 @onready var navigation_agent := $NavigationAgent2D as NavigationAgent2D
 @onready var moving := true
 
-var target_position: Vector2
+var target_position
 var desired_train: int
 
 func _ready() -> void:
 	EventBus.register_signal(self.person_reached_position)
 	EventBus.register_signal(self.person_board_train)
+	EventBus.register_signal(self.person_no_path_available)
 
 func _physics_process(_delta):
 	if target_position == null: return
-	if not navigation_agent.is_target_reachable(): call_deferred("queue_free")
+	if not navigation_agent.is_target_reachable():
+		self.target_position = null
+		self.person_no_path_available.emit(self.global_position)
+		await get_tree().create_timer(4.0).timeout
+		call_deferred("queue_free")
+		return
 	
 	var move_direction = to_local(navigation_agent.get_next_path_position()).normalized()
 	velocity = move_direction * 30
