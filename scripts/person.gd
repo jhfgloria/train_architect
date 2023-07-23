@@ -16,6 +16,7 @@ func _ready() -> void:
 
 func _physics_process(_delta):
 	if target_position == null: return
+	if not navigation_agent.is_target_reachable(): call_deferred("queue_free")
 	
 	var move_direction = to_local(navigation_agent.get_next_path_position()).normalized()
 	velocity = move_direction * 30

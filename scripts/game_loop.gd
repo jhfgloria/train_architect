@@ -96,6 +96,13 @@ func _call_people(rail_position: Vector2, rail_id: int) -> void:
 	var farest_point = spawn_position
 
 	for y in range(-16, 17, 32):
+		var is_rail = false
+		for rail in rails_collection.get_children():
+			if rail.global_position == Vector2(240, rail_position.y - y):
+				is_rail = true
+		
+		if is_rail: continue
+		
 		for x in range(8, 480, 16):
 			var tile_global_position = Vector2(x, rail_position.y - y)
 			var tile_position = terrain.local_to_map(tile_global_position)
@@ -217,6 +224,18 @@ func _process_costs() -> void:
 	var rails_count: int = self.rails_collection.get_children().size()
 	self._debit(rails_count * 1200)
 	
+	var platforms_count: int = 0
+	for x in range(8, 481, 16):
+		for y in range(56, 281, 16):
+			var tile_global_position = Vector2(x, y)
+			var tile_position = terrain.local_to_map(tile_global_position)
+			var tile_data = terrain.get_cell_tile_data(0, tile_position)
+			
+			if tile_data.terrain == 1: platforms_count += 1
+	
+	print(platforms_count)
+	self._debit(platforms_count - 32 * 5)
+	
 	if self.budget < 0:
 		self._pause_game()
 		if not self.is_game_over:
@@ -254,7 +273,11 @@ func _game_over():
 	self.game_over.visible = true
 	self.build_tool.building_unit = BuildTool.BuildingUnit.NONE
 	self.build_menu.visible = false
+	$"Back music".stop()
 
 func _dismiss_budget_warning():
 	self.budget_warning.visible = false
 	self.build_menu.visible = true
+
+func _on_game_over_btn_button_down():
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")

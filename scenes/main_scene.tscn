@@ -521,20 +521,6 @@ attenuation = 4.75683
 stream = ExtResource("15_gsg21")
 volume_db = -20.0
 
-[node name="Button" type="Button" parent="."]
-offset_left = 72.0
-offset_top = 296.0
-offset_right = 80.0
-offset_bottom = 304.0
-text = "Pause"
-
-[node name="Button2" type="Button" parent="."]
-offset_left = 344.0
-offset_top = 296.0
-offset_right = 414.0
-offset_bottom = 327.0
-text = "Resume"
-
 [node name="budget_warning" type="Node2D" parent="."]
 visible = false
 z_index = 4096
@@ -559,7 +545,7 @@ position = Vector2(240, 160)
 [node name="Sprite2D" type="Sprite2D" parent="game_over"]
 texture = ExtResource("18_kmd8w")
 
-[node name="TextureButton" type="TextureButton" parent="game_over"]
+[node name="game_over_btn" type="TextureButton" parent="game_over"]
 offset_left = -51.0
 offset_top = 75.0
 offset_right = -11.0
@@ -576,7 +562,5 @@ ignore_texture_size = true
 [connection signal="timeout" from="HUD/budget_variation_timer" to="HUD" method="_on_budget_variation_timer_timeout"]
 [connection signal="timeout" from="Clock Timer" to="." method="_on_clock_timer_timeout"]
 [connection signal="finished" from="Back music" to="." method="_on_back_music_finished"]
-[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
-[connection signal="button_down" from="Button2" to="." method="_on_button_2_button_down"]
 [connection signal="button_down" from="budget_warning/TextureButton" to="." method="_on_texture_button_button_down"]
-[connection signal="button_down" from="game_over/TextureButton" to="." method="_on_texture_button_button_down"]
+[connection signal="button_down" from="game_over/game_over_btn" to="." method="_on_game_over_btn_button_down"]

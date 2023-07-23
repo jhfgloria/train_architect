@@ -20,7 +20,6 @@ texture = ExtResource("2_ryo8d")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
 neighbor_distance = 3833.33
-debug_enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -1)
